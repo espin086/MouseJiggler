@@ -1,9 +1,3 @@
-"""
-This program moves the mouse cursor randomly on the screen and performs 
-random actions such as switching tabs or clicking on buttons. 
-It is useful for preventing the computer from going to sleep or 
-locking the screen due to inactivity.
-"""
 import pyautogui
 import numpy as np
 import time
@@ -11,7 +5,6 @@ import keyboard
 import logging
 import random
 import threading
-import argparse
 
 
 def check_key_press():
@@ -131,12 +124,11 @@ def main(delay_mean, delay_std_dev, move_duration):
     logging.info("Key pressed. Exiting program.")
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--loop",
-        action="store_true",
-        help="Run the program in a loop using while",
+def run_jiggler():
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="This program moves the mouse cursor randomly on the screen and performs random actions such as switching tabs or clicking on buttons."
     )
     parser.add_argument(
         "--delay_mean",
@@ -158,7 +150,7 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
 
-    if args.loop:
-        main(args.delay_mean, args.delay_std_dev, args.move_duration)
-    else:
-        main(args.delay_mean, args.delay_std_dev, args.move_duration)
+    main(args.delay_mean, args.delay_std_dev, args.move_duration)
+
+
+run_jiggler()
