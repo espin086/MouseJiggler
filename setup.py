@@ -1,9 +1,9 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
-    name="rodentshaker",
-    version="0.0.1",
-    py_modules=["rodentshaker"],
-    entry_points={"console_scripts": ["rodentshaker = jiggler:main"]},
+    name="rodents",
+    version="0.0.6",
+    packages=find_packages(),
+    entry_points={"console_scripts": ["rodents = rodents.rodents.jiggler:run_giggler"]},
     install_requires=open("requirements.txt", encoding="utf-8").readlines(),
 )
