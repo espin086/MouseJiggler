@@ -4,6 +4,11 @@
 
 🐀 rodents is a command line tool that moves the mouse cursor randomly on the screen and performs random actions such as switching tabs or clicking on buttons. It is designed to simulate user activity and prevent screensavers or idle timeouts from activating.
 
+## 📋 Requirements
+
+- know how access the terminal on your computer, [here is a guide to use terminal on Mac](https://www.youtube.com/watch?v=FfT8OfMpARM)
+- install pip on your computer, here is a [guide to install pip](https://www.youtube.com/watch?v=MuOy6I7ng_Q)
+
 ## 🚀 Installation
 
 You can install 🐀 rodents using pip:
