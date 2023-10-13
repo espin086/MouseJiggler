@@ -5,6 +5,7 @@ import keyboard
 import logging
 import random
 import threading
+import platform
 
 
 def check_key_press():
@@ -18,9 +19,14 @@ def check_key_press():
 
 def switch_to_next_tab(x, y, duration):
     """
-    Function to switch to the previous tab.
+    Function to switch to the next tab.
     """
-    pyautogui.hotkey("command", "shift", "[")
+    if platform.system() == "Darwin":  # macOS
+        pyautogui.hotkey("command", "shift", "[")
+    elif platform.system() == "Windows":
+        pyautogui.hotkey("ctrl", "tab")
+    else:
+        print("Unsupported operating system")
 
 
 def move_mouse_to_position(x, y, duration):
@@ -34,7 +40,12 @@ def switch_to_previous_tab(x, y, duration):
     """
     Function to switch to the previous tab.
     """
-    pyautogui.hotkey("command", "shift", "]")
+    if platform.system() == "Darwin":  # macOS
+        pyautogui.hotkey("command", "shift", "]")
+    elif platform.system() == "Windows":
+        pyautogui.hotkey("ctrl", "shift", "tab")
+    else:
+        print("Unsupported operating system")
 
 
 def main(delay_mean, delay_std_dev, move_duration):
