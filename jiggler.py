@@ -1,3 +1,9 @@
+"""
+This program moves the mouse cursor randomly on the screen and performs 
+random actions such as switching tabs or clicking on buttons. 
+It is useful for preventing the computer from going to sleep or 
+locking the screen due to inactivity.
+"""
 import pyautogui
 import numpy as np
 import time
@@ -5,91 +11,154 @@ import keyboard
 import logging
 import random
 import threading
-
-# Set up basic logging configuration
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
-
-# Get screen size
-screen_width, screen_height = pyautogui.size()
-logging.info(f"Screen size: {screen_width} x {screen_height}")
-
-# Set the center of the screen as the center of the 2D normal distribution
-mean = (screen_width / 2, screen_height / 2)
-
-# Set the standard deviation for x and y coordinates
-std_dev_x = screen_width / 6
-std_dev_y = screen_height / 6
-
-# Set the parameters for the delay distribution
-delay_mean = 12
-delay_std_dev = 6
-
-# Set the time lapse for the mouse movement
-move_duration = 0.5
-
-# Flag to control the execution of the loop
-continue_execution = True
+import argparse
 
 
 def check_key_press():
+    """
+    Function to monitor key presses and stop the execution of the loop when a key is pressed.
+    """
     global continue_execution
     keyboard.wait()  # Wait for any key press
     continue_execution = False
 
 
-# Start a separate thread to monitor key presses
-key_thread = threading.Thread(target=check_key_press)
-key_thread.start()
+def switch_to_next_tab(x, y, duration):
+    """
+    Function to switch to the previous tab.
+    """
+    pyautogui.hotkey("command", "shift", "[")
 
 
-# Define a list of commands using lambda expressions
-# Define a list of commands using lambda expressions and their descriptions
-commands = [
-    {
-        "command": lambda: pyautogui.hotkey("command", "shift", "]"),
-        "description": "Switched to the next tab",
-    },
-    {
-        "command": lambda: pyautogui.moveTo(x, y, duration=move_duration),
-        "description": "Moved mouse to position",
-    },
-    {
-        "command": lambda: pyautogui.hotkey("command", "shift", "["),
-        "description": "Switched to the previous tab",
-    },
-]
+def move_mouse_to_position(x, y, duration):
+    """
+    Function to move the mouse to a specified position.
+    """
+    pyautogui.moveTo(x, y, duration=duration)
 
 
-while continue_execution:
-    # Sample x and y coordinates from the 2D normal distribution
-    x, y = np.random.multivariate_normal(
-        mean, [[std_dev_x**2, 0], [0, std_dev_y**2]]
+def switch_to_previous_tab(x, y, duration):
+    """
+    Function to switch to the previous tab.
+    """
+    pyautogui.hotkey("command", "shift", "]")
+
+
+def main(delay_mean, delay_std_dev, move_duration):
+    """
+    Main function to execute the program.
+    """
+    # Set up basic logging configuration
+    logging.basicConfig(
+        level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
     )
 
-    # Clamp the values to be within the screen boundaries
-    x, y = max(0, min(x, screen_width - 1)), max(0, min(y, screen_height - 1))
+    # Get screen size
+    screen_width, screen_height = pyautogui.size()
+    logging.info(f"Screen size: {screen_width} x {screen_height}")
 
-    # Choose a random command from the commands list
-    random_command = random.choice(commands)
+    # Set the center of the screen as the center of the 2D normal distribution
+    mean = (screen_width / 2, screen_height / 2)
 
-    # Execute the random command
-    random_command["command"]()
+    # Set the standard deviation for x and y coordinates
+    std_dev_x = screen_width / 6
+    std_dev_y = screen_height / 6
 
-    # Log the executed command
-    logging.info(random_command["description"])
+    # Set the parameters for the delay distribution
+    delay_mean = delay_mean
+    delay_std_dev = delay_std_dev
 
-    # Sample a delay from the normal distribution
-    delay = np.random.normal(delay_mean, delay_std_dev)
+    # Set the time lapse for the mouse movement
+    move_duration = move_duration
 
-    # Clamp the delay to be non-negative
-    delay = max(0, delay)
+    # Flag to control the execution of the loop
+    continue_execution = True
 
-    # Log the delay
-    logging.info(f"Delaying next movement for {delay:.2f} seconds")
+    # Define a list of commands using lambda expressions and their descriptions
+    commands = [
+        {
+            "command": switch_to_next_tab,
+            "description": "Switched to the next tab",
+        },
+        {
+            "command": move_mouse_to_position,
+            "description": "Moved mouse to position",
+        },
+        {
+            "command": switch_to_previous_tab,
+            "description": "Switched to the previous tab",
+        },
+    ]
 
-    # Delay the next iteration
-    time.sleep(delay)
+    # Start a separate thread to monitor key presses
+    key_thread = threading.Thread(target=check_key_press)
+    key_thread.start()
 
-logging.info("Key pressed. Exiting program.")
+    while True:
+        while continue_execution:
+            # Sample x and y coordinates from the 2D normal distribution
+            x, y = np.random.multivariate_normal(
+                mean, [[std_dev_x**2, 0], [0, std_dev_y**2]]
+            )
+
+            # Clamp the values to be within the screen boundaries
+            x, y = max(0, min(x, screen_width - 1)), max(0, min(y, screen_height - 1))
+
+            # Choose a random command from the commands list
+            random_command = random.choice(commands)
+
+            # Execute the random command
+            random_command["command"](x, y, move_duration)
+
+            # Log the executed command
+            logging.info(random_command["description"])
+
+            # Sample a delay from the normal distribution
+            delay = np.random.normal(delay_mean, delay_std_dev)
+
+            # Clamp the delay to be non-negative
+            delay = max(0, delay)
+
+            # Log the delay
+            logging.info(f"Delaying next movement for {delay:.2f} seconds")
+
+            # Delay the next iteration
+            time.sleep(delay)
+
+        # Reset the flag to continue execution
+        continue_execution = True
+
+    logging.info("Key pressed. Exiting program.")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--loop",
+        action="store_true",
+        help="Run the program in a loop using while",
+    )
+    parser.add_argument(
+        "--delay_mean",
+        type=float,
+        default=12,
+        help="Mean value for delay distribution",
+    )
+    parser.add_argument(
+        "--delay_std_dev",
+        type=float,
+        default=6,
+        help="Standard deviation for delay distribution",
+    )
+    parser.add_argument(
+        "--move_duration",
+        type=float,
+        default=0.5,
+        help="Duration of the mouse movement in seconds",
+    )
+    args = parser.parse_args()
+
+    if args.loop:
+        main(args.delay_mean, args.delay_std_dev, args.move_duration)
+    else:
+        main(args.delay_mean, args.delay_std_dev, args.move_duration)
