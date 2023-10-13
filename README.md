@@ -25,6 +25,15 @@ To use 🐀 rodents, you can run the following command:
 rodents --delay_mean <mean> --delay_std_dev <std_dev> --move_duration <duration>
 ```
 
+This will make the movements of your mouse delayed in a way that follows a normal distribution so that there are no fixed intervals of movements to make it appear more human.
+
+
+![Alt](images/normal_distribution.png)
+
+
+
+
+
 💡 PROTIP: best if you open up a single browser with multiple tabs you want the program to cycle through.
 
 The available options are:
