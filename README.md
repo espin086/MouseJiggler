@@ -12,7 +12,7 @@ You can install 🐀 rodents using pip:
 pip install rodents
 ```
 
-🖱## Usage
+## 🖱 Usage
 
 To use 🐀 rodents, you can run the following command:
 
@@ -33,6 +33,9 @@ For example, to run 🐀 rodents with a mean delay of 10, standard deviation of 
 ```
 rodents --delay_mean 10 --delay_std_dev 5 --move_duration 1
 ```
+
+🛑 Stopping 🐀 rodents: press Ctrl + C in your terminal (Mac) or other similar hot-key to stop terminal execution.
+
 
 ## 🚨 Disclaimer
 
