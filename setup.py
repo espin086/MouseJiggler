@@ -1,8 +1,9 @@
 from setuptools import setup
 
 setup(
-    name="jiggler",
+    name="rodentshaker",
     version="0.0.1",
-    py_modules=["jiggler"],
-    entry_points={"console_scripts": ["jiggler = jiggler:main"]},
+    py_modules=["rodentshaker"],
+    entry_points={"console_scripts": ["rodentshaker = jiggler:main"]},
+    install_requires=open("requirements.txt", encoding="utf-8").readlines(),
 )
