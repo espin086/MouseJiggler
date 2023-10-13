@@ -52,13 +52,14 @@ Thank you for considering contributing to 🐀 rodents! We welcome any contribut
 
 To contribute to 🐀 rodents, please follow these steps:
 
-1. Fork the repository on GitHub.
-2. Clone your forked repository to your local machine.
-3. Create a new branch for your contribution.
-4. Make your changes and improvements to the codebase.
-5. Test your changes thoroughly.
-6. Commit and push your changes to your forked repository.
-7. Submit a pull request to the main repository.
+1. Find an issue you want to work on [here](https://github.com/espin086/rodents/issues) and comment on issue stating your desire to work on it, wait for moderator response Or create an issue for a new feature and wait for moderator response.
+2. Fork the repository on GitHub.
+3. Clone your forked repository to your local machine.
+4. Create a new branch for your contribution.
+5. Make your changes and improvements to the codebase.
+6. Test your changes thoroughly.
+7. Commit and push your changes to your forked repository.
+8. Submit a pull request to the main repository.
 
 Please ensure that your code follows best practices and is well-documented. We appreciate detailed commit messages and clear explanations of the changes you have made.
 
