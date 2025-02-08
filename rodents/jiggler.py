@@ -6,6 +6,7 @@ import logging
 import random
 import threading
 import platform
+import argparse
 
 
 def check_key_press():
@@ -17,7 +18,7 @@ def check_key_press():
     continue_execution = False
 
 
-def switch_to_next_tab(x, y, duration):
+def switch_to_next_tab():
     """
     Function to switch to the next tab.
     """
@@ -36,7 +37,7 @@ def move_mouse_to_position(x, y, duration):
     pyautogui.moveTo(x, y, duration=duration)
 
 
-def switch_to_previous_tab(x, y, duration):
+def switch_to_previous_tab():
     """
     Function to switch to the previous tab.
     """
@@ -81,15 +82,15 @@ def main(delay_mean, delay_std_dev, move_duration):
     # Define a list of commands using lambda expressions and their descriptions
     commands = [
         {
-            "command": switch_to_next_tab,
+            "command": lambda: switch_to_next_tab(),
             "description": "Switched to the next tab",
         },
         {
-            "command": move_mouse_to_position,
+            "command": lambda x, y, duration: move_mouse_to_position(x, y, duration),
             "description": "Moved mouse to position",
         },
         {
-            "command": switch_to_previous_tab,
+            "command": lambda: switch_to_previous_tab(),
             "description": "Switched to the previous tab",
         },
     ]
@@ -112,7 +113,10 @@ def main(delay_mean, delay_std_dev, move_duration):
             random_command = random.choice(commands)
 
             # Execute the random command
-            random_command["command"](x, y, move_duration)
+            if random_command["description"] == "Moved mouse to position":
+                random_command["command"](x, y, move_duration)
+            else:
+                random_command["command"]()
 
             # Log the executed command
             logging.info(random_command["description"])
@@ -136,8 +140,6 @@ def main(delay_mean, delay_std_dev, move_duration):
 
 
 def run_jiggler():
-    import argparse
-
     parser = argparse.ArgumentParser(
         description="This program moves the mouse cursor randomly on the screen and performs random actions such as switching tabs or clicking on buttons."
     )
