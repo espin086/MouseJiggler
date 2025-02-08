@@ -60,7 +60,7 @@ def main(delay_mean, delay_std_dev, move_duration):
 
     # Get screen size
     screen_width, screen_height = pyautogui.size()
-    logging.info(f"Screen size: {screen_width} x {screen_height}")
+    logging.info("Screen size: %d x %d", screen_width, screen_height)
 
     # Set the center of the screen as the center of the 2D normal distribution
     mean = (screen_width / 2, screen_height / 2)
@@ -119,7 +119,7 @@ def main(delay_mean, delay_std_dev, move_duration):
                 random_command["command"]()
 
             # Log the executed command
-            logging.info(random_command["description"])
+            logging.info("%s", random_command["description"])
 
             # Sample a delay from the normal distribution
             delay = np.random.normal(delay_mean, delay_std_dev)
@@ -128,7 +128,7 @@ def main(delay_mean, delay_std_dev, move_duration):
             delay = max(0, delay)
 
             # Log the delay
-            logging.info(f"Delaying next movement for {delay:.2f} seconds")
+            logging.info("Delaying next movement for %.2f seconds", delay)
 
             # Delay the next iteration
             time.sleep(delay)
